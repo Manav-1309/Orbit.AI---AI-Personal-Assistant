@@ -197,7 +197,7 @@ function SidebarContent({
 
           {!isCollapsed && (
             <span className="text-[15px] font-bold text-slate-800 dark:text-white leading-none truncate">
-              OmniSync
+              Orbit
               <span className="text-indigo-500 dark:text-indigo-400">.ai</span>
             </span>
           )}

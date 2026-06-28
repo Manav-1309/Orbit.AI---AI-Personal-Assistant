@@ -64,7 +64,7 @@ export default function SignIn() {
               </svg>
             </div>
             <span className="text-xl font-bold tracking-tight text-white group-hover:text-purple-400 transition-colors duration-300">
-              OmniSync<span className="text-purple-500">.ai</span>
+              Orbit<span className="text-purple-500">.ai</span>
             </span>
           </Link>
           <h2 className="text-xl font-bold text-white tracking-tight">Welcome Back</h2>

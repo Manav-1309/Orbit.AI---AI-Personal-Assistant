@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Orbit.AI | Connected AI Personal Assistant & Chief of Staff",
-  description: "Unify Gmail, WhatsApp, Telegram, and Outlook into a single cognitive brain. Let OmniSync AI automatically summarize chat threads, extract action-item reminders, and draft context-aware replies.",
+  description: "Unify Gmail, WhatsApp, Telegram, and Outlook into a single cognitive brain. Let Orbit AI automatically summarize chat threads, extract action-item reminders, and draft context-aware replies.",
 };
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
-# OmniSync AI Personal Assistant
+# Orbit AI Personal Assistant
 
-OmniSync is a Next.js personal assistant dashboard that connects communication tools, generates AI briefings, tracks alerts, and provides an assistant chat experience over synced app data.
+Orbit is a Next.js personal assistant dashboard that connects communication tools, generates AI briefings, tracks alerts, and provides an assistant chat experience over synced app data.
 
 ## Tech Stack
 

@@ -301,7 +301,7 @@ export default function Home() {
               </svg>
             </div>
             <span className="text-xl font-bold tracking-tight text-white group-hover:text-purple-400 transition-colors duration-300">
-              OmniSync<span className="text-purple-500">.ai</span>
+              Orbit<span className="text-purple-500">.ai</span>
             </span>
           </a>
 
@@ -459,7 +459,7 @@ export default function Home() {
         {/* Intro Badge */}
         <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full glass border border-purple-500/20 mb-8 animate-float">
           <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping"></span>
-          <span className="text-xs font-semibold text-purple-300 tracking-wide">Introducing OmniSync 1.0</span>
+          <span className="text-xs font-semibold text-purple-300 tracking-wide">Introducing Orbit 1.0</span>
           <span className="text-slate-500">|</span>
           <span className="text-xs text-indigo-300 flex items-center">
             Integrate Gmail, WhatsApp, Telegram, Outlook
@@ -662,7 +662,7 @@ export default function Home() {
             A unified cognitive layer for your communication tools
           </h3>
           <p className="text-slate-400 text-base sm:text-lg">
-            Say goodbye to jumping between messaging apps, emails, and calendar schedules. OmniSync handles it all automatically.
+            Say goodbye to jumping between messaging apps, emails, and calendar schedules. Orbit handles it all automatically.
           </p>
         </div>
 
@@ -756,7 +756,7 @@ export default function Home() {
               </span>
               <h4 className="text-xl font-bold text-white">Zero-Click Reminders</h4>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Never drop a promise again. OmniSync automatically detects casual commitments like "I'll call you at 4 PM" or "Sending document tonight", sending push reminders to keep you on schedule.
+                Never drop a promise again. Orbit automatically detects casual commitments like "I'll call you at 4 PM" or "Sending document tonight", sending push reminders to keep you on schedule.
               </p>
             </div>
 
@@ -782,7 +782,7 @@ export default function Home() {
               </span>
               <h4 className="text-xl sm:text-2xl font-bold text-white">Local-First Privacy Guard</h4>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Your messages belong to you. OmniSync runs on a local-first architecture. It processes texts directly in secure enclaves using AES-256 encryption. We never store, read, or sell your private conversation data.
+                Your messages belong to you. Orbit runs on a local-first architecture. It processes texts directly in secure enclaves using AES-256 encryption. We never store, read, or sell your private conversation data.
               </p>
             </div>
 
@@ -946,7 +946,7 @@ export default function Home() {
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
                       </svg>
-                      <span>Analyze with OmniSync AI</span>
+                      <span>Analyze with Orbit AI</span>
                     </>
                   )}
                 </button>
@@ -999,7 +999,7 @@ export default function Home() {
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-slate-400">AI Engine Standby</p>
-                        <p className="text-[11px] text-slate-600 mt-1 max-w-[200px]">Click 'Analyze with OmniSync AI' to trigger the parser.</p>
+                        <p className="text-[11px] text-slate-600 mt-1 max-w-[200px]">Click 'Analyze with Orbit AI' to trigger the parser.</p>
                       </div>
                     </div>
                   )}
@@ -1241,11 +1241,11 @@ export default function Home() {
           {[
             {
               q: "How secure is my connected account data?",
-              a: "We prioritize your privacy above all. OmniSync utilizes bank-grade OAuth connections to sync your channels. All cognitive summaries and reply draft processing are performed inside secure sandboxed execution enclaves. Your data is encrypted in transit and at rest using AES-256 protocols."
+              a: "We prioritize your privacy above all. Orbit utilizes bank-grade OAuth connections to sync your channels. All cognitive summaries and reply draft processing are performed inside secure sandboxed execution enclaves. Your data is encrypted in transit and at rest using AES-256 protocols."
             },
             {
               q: "Does the AI read all my private chats continuously?",
-              a: "No. OmniSync's listener engine parses raw metadata streams to identify target tasks. It only processes message body text when specific events occur (e.g., extracting reminders, creating requested summaries, or drafting answers). You have granular control to pause syncing on any chat, channel, or email at any moment."
+              a: "No. Orbit's listener engine parses raw metadata streams to identify target tasks. It only processes message body text when specific events occur (e.g., extracting reminders, creating requested summaries, or drafting answers). You have granular control to pause syncing on any chat, channel, or email at any moment."
             },
             {
               q: "Can I sync multiple Gmail or Outlook accounts?",
@@ -1253,7 +1253,7 @@ export default function Home() {
             },
             {
               q: "Does it support voice messages in WhatsApp or Telegram?",
-              a: "Yes! OmniSync features built-in high-accuracy speech-to-text translators. When you receive a long voice message, the system transcribes it locally and supplies a text digest so you can grasp the key points without listening to the audio."
+              a: "Yes! Orbit features built-in high-accuracy speech-to-text translators. When you receive a long voice message, the system transcribes it locally and supplies a text digest so you can grasp the key points without listening to the audio."
             }
           ].map((faq, index) => {
             const isOpen = openFaq === index;
@@ -1300,7 +1300,7 @@ export default function Home() {
               Ready to reclaim <br className="sm:hidden" /> your focus?
             </h3>
             <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
-              Join 1,400+ professionals using OmniSync AI to unify their messaging, emails, and reminders. Start your 14-day free trial today.
+              Join 1,400+ professionals using Orbit AI to unify their messaging, emails, and reminders. Start your 14-day free trial today.
             </p>
 
             {waitlistStatus === "success" ? (
@@ -1365,10 +1365,10 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <span className="text-lg font-bold tracking-tight text-white">OmniSync<span className="text-purple-500">.ai</span></span>
+              <span className="text-lg font-bold tracking-tight text-white">Orbit<span className="text-purple-500">.ai</span></span>
             </a>
             <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-              OmniSync AI brings clarity to your communication channels, orchestrating summaries, draft response suggests, and reminder calendar syncs.
+              Orbit AI brings clarity to your communication channels, orchestrating summaries, draft response suggests, and reminder calendar syncs.
             </p>
             <div className="flex space-x-4">
               {/* Social Link: Twitter */}
@@ -1443,7 +1443,7 @@ export default function Home() {
 
         {/* Bottom Credits */}
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <span>&copy; {new Date().getFullYear()} OmniSync AI Inc. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} Orbit AI Inc. All rights reserved.</span>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-slate-300 transition">Privacy Shield</a>
             <a href="#" className="hover:text-slate-300 transition">CCPA Data Privacy</a>

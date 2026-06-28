@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
       parts: [{ text: prompt }]
     });
 
-    const systemPrompt = `You are OmniSync, an advanced AI Personal Assistant.
+    const systemPrompt = `You are Orbit, an advanced AI Personal Assistant.
 You help the user stay productive by tracking communications across their connected platforms (Gmail, WhatsApp, Slack, Outlook, Discord, LinkedIn, Telegram, etc.).
 
 Below is the latest synced data from the user's connected applications:

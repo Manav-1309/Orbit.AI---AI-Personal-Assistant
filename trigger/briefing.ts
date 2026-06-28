@@ -157,7 +157,7 @@ export const generateBriefingTask = task({
       try {
         const ai = new GoogleGenAI({ apiKey: geminiApiKey });
 
-        const prompt = `You are OmniSync, an AI personal assistant. Analyze the following real communications fetched from the user's connected apps and produce a structured intelligence briefing.
+        const prompt = `You are Orbit, an AI personal assistant. Analyze the following real communications fetched from the user's connected apps and produce a structured intelligence briefing.
 
 Briefing: "${scheduleName}"
 Goal: ${scheduleDesc}

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const isEmail = type === "email" || replyType === "email";
 
     const prompt = isEmail
-      ? `You are OmniSync, an AI personal assistant. Draft a professional, concise email reply.
+      ? `You are Orbit, an AI personal assistant. Draft a professional, concise email reply.
 
 Original Email:
 From: ${from || "Unknown"}
@@ -33,7 +33,7 @@ Instructions:
 - Use a professional closing
 - Do NOT include subject line or email headers, just the body text
 - Output only the email body text, no markdown formatting`
-      : `You are OmniSync, an AI personal assistant. Draft a concise, natural message reply.
+      : `You are Orbit, an AI personal assistant. Draft a concise, natural message reply.
 
 Original Message:
 From: ${from || "Unknown"}

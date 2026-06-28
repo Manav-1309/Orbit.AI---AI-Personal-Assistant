@@ -230,7 +230,7 @@ export async function POST(req: NextRequest) {
               summary = `A chat session with ${contact.name} containing ${msgs.length} messages. The conversation includes coordinate updates and general task management.`;
             }
           } else {
-            summary = `OmniSync Daily WhatsApp Brief:\n` +
+            summary = `Orbit Daily WhatsApp Brief:\n` +
               `1. Sarah Jenkins (Finance): Review NDA terms (needs reply in 2 days) & Lunch tomorrow proposed.\n` +
               `2. Alex Rivera (Tech): Coffee tomorrow at 4:30 PM (Starbucks) to review technical roadmap.\n` +
               `3. John Doe (Acme): Submit Q2 Slides (Due 4:45 PM today).\n` +

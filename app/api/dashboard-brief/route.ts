@@ -146,7 +146,7 @@ export async function POST(req: NextRequest) {
     if (hasApiKey && hasData) {
       try {
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-        const systemPrompt = `You are an advanced AI personal assistant named OmniSync.
+        const systemPrompt = `You are an advanced AI personal assistant named Orbit.
 Analyze the following recent email and chat communications.
 Generate a structured intelligence briefing for the user's dashboard today.
 The current local time is: ${new Date().toISOString()} (${format(new Date(), "EEEE")}).

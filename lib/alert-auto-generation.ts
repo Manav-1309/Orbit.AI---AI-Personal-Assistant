@@ -164,7 +164,7 @@ async function buildAiCandidates(activity: AppActivity[]): Promise<AlertCandidat
     const ai = new GoogleGenAI({ apiKey: geminiApiKey });
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `You are OmniSync's alert monitor. Analyze only this real connected app activity and return important alerts that deserve the user's attention.
+      contents: `You are Orbit's alert monitor. Analyze only this real connected app activity and return important alerts that deserve the user's attention.
 
 Real activity:
 ${JSON.stringify(activity.slice(0, 25), null, 2)}

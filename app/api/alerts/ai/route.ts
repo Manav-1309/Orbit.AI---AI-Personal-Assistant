@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     let prompt = "";
 
     if (feature === "summary") {
-      prompt = `You are OmniSync, an advanced AI personal assistant. Generate a concise, clear summary of this alert.
+      prompt = `You are Orbit, an advanced AI personal assistant. Generate a concise, clear summary of this alert.
       
 Alert Title: ${alert.title}
 Source App: ${alert.source_app}
@@ -62,7 +62,7 @@ Instructions:
 - Keep the summary short and readable (under 60 words total).
 - Do not use markdown titles, just plain bullets.`;
     } else if (feature === "next_action") {
-      prompt = `You are OmniSync, an advanced AI personal assistant. Suggest the single best next action the user should take to resolve this alert.
+      prompt = `You are Orbit, an advanced AI personal assistant. Suggest the single best next action the user should take to resolve this alert.
       
 Alert Title: ${alert.title}
 Source App: ${alert.source_app}
@@ -77,7 +77,7 @@ Instructions:
     } else if (feature === "reply") {
       const isEmail = alert.source_app === "gmail";
       prompt = isEmail
-        ? `You are OmniSync, an AI personal assistant. Draft a professional, concise email reply to the sender of this alert.
+        ? `You are Orbit, an AI personal assistant. Draft a professional, concise email reply to the sender of this alert.
         
 Alert Details:
 Title: ${alert.title}
@@ -90,7 +90,7 @@ Instructions:
 - Keep it short (2-3 paragraphs max).
 - Address any specific queries in the message.
 - Output only the email body text, no subject lines or headers.`
-        : `You are OmniSync, an AI personal assistant. Draft a concise, natural message reply for this chat alert.
+        : `You are Orbit, an AI personal assistant. Draft a concise, natural message reply for this chat alert.
         
 Alert Details:
 Sender: ${alert.title}

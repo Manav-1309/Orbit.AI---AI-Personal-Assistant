@@ -19,7 +19,7 @@ interface PhoneUserData {
   verification_method: "sms" | "whatsapp";
 }
 
-const PHONE_USER_KEY = "omnisync_phone_user";
+const PHONE_USER_KEY = "Orbit_phone_user";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
