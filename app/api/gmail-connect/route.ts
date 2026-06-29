@@ -29,6 +29,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Exchange code for tokens
+    const appUrl =
+  process.env.APP_URL ||
+  process.env.NEXT_PUBLIC_APP_URL;
+
+const redirectUri = `${appUrl}/auth/gmail-callback`;
     const response = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -36,7 +41,7 @@ export async function POST(req: NextRequest) {
         code,
         client_id: clientId,
         client_secret: clientSecret,
-        redirect_uri: "http://localhost:3000/auth/gmail-callback",
+        redirect_uri: redirectUri,
         grant_type: "authorization_code"
       })
     });

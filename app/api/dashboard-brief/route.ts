@@ -3,51 +3,51 @@ import { format } from "date-fns";
 import { insforge } from "@/lib/insforge";
 import { GoogleGenAI } from "@google/genai";
 
-const MOCK_BRIEF_DATA = {
-  stats: {
-    importantCount: 3,
-    priorityCount: 2,
-    followUpCount: 1
-  },
-  brief: [
-    {
-      id: "b1",
-      app: "gmail",
-      type: "Gmail Digest",
-      title: "Q2 Budget Review",
-      summary: "Sarah requested a final review of the Q2 budget proposal with a proposed 10% marketing spend adjustment.",
-      time: "12m ago",
-      action: "Review proposal"
-    },
-    {
-      id: "b2",
-      app: "whatsapp",
-      type: "WhatsApp Digest",
-      title: "Co-Founder Sync",
-      summary: "Alex wants to meet for coffee tomorrow at 4:30 PM to align on tech roadmap milestones.",
-      time: "45m ago",
-      action: "Check schedule"
-    }
-  ],
-  priorityItems: [
-    {
-      id: "p1",
-      app: "gmail",
-      title: "Submit Q2 Slides to John",
-      time: "Due 4:45 PM today",
-      description: "Send final compiled roadmap and budget presentation slides.",
-      priority: "High"
-    },
-    {
-      id: "p2",
-      app: "whatsapp",
-      title: "Coffee with Alex",
-      time: "Tomorrow 4:30 PM",
-      description: "Discuss tech milestones and next deployment roadmap.",
-      priority: "Medium"
-    }
-  ]
-};
+// const MOCK_BRIEF_DATA = {
+//   stats: {
+//     importantCount: 3,
+//     priorityCount: 2,
+//     followUpCount: 1
+//   },
+//   brief: [
+//     {
+//       id: "b1",
+//       app: "gmail",
+//       type: "Gmail Digest",
+//       title: "Q2 Budget Review",
+//       summary: "Sarah requested a final review of the Q2 budget proposal with a proposed 10% marketing spend adjustment.",
+//       time: "12m ago",
+//       action: "Review proposal"
+//     },
+//     {
+//       id: "b2",
+//       app: "whatsapp",
+//       type: "WhatsApp Digest",
+//       title: "Co-Founder Sync",
+//       summary: "Alex wants to meet for coffee tomorrow at 4:30 PM to align on tech roadmap milestones.",
+//       time: "45m ago",
+//       action: "Check schedule"
+//     }
+//   ],
+//   priorityItems: [
+//     {
+//       id: "p1",
+//       app: "gmail",
+//       title: "Submit Q2 Slides to John",
+//       time: "Due 4:45 PM today",
+//       description: "Send final compiled roadmap and budget presentation slides.",
+//       priority: "High"
+//     },
+//     {
+//       id: "p2",
+//       app: "whatsapp",
+//       title: "Coffee with Alex",
+//       time: "Tomorrow 4:30 PM",
+//       description: "Discuss tech milestones and next deployment roadmap.",
+//       priority: "Medium"
+//     }
+//   ]
+// };
 
 export async function POST(req: NextRequest) {
   try {
@@ -225,37 +225,63 @@ CRITICAL FOR SPEED AND USER EXPERIENCE:
     }
 
     // 6. Fallback Mock Data (High-fidelity previews representing connected state)
-    const customMockData = JSON.parse(JSON.stringify(MOCK_BRIEF_DATA));
+    // const customMockData = JSON.parse(JSON.stringify(MOCK_BRIEF_DATA));
     
-    if (isGmailConnected || isWhatsAppConnected) {
-      if (!isGmailConnected) {
-        customMockData.brief = customMockData.brief.filter((b: any) => b.app !== "gmail");
-        customMockData.priorityItems = customMockData.priorityItems.filter((p: any) => p.app !== "gmail");
-      }
-      if (!isWhatsAppConnected) {
-        customMockData.brief = customMockData.brief.filter((b: any) => b.app !== "whatsapp");
-        customMockData.priorityItems = customMockData.priorityItems.filter((p: any) => p.app !== "whatsapp");
-      }
+    // if (isGmailConnected || isWhatsAppConnected) {
+    //   if (!isGmailConnected) {
+    //     customMockData.brief = customMockData.brief.filter((b: any) => b.app !== "gmail");
+    //     customMockData.priorityItems = customMockData.priorityItems.filter((p: any) => p.app !== "gmail");
+    //   }
+    //   if (!isWhatsAppConnected) {
+    //     customMockData.brief = customMockData.brief.filter((b: any) => b.app !== "whatsapp");
+    //     customMockData.priorityItems = customMockData.priorityItems.filter((p: any) => p.app !== "whatsapp");
+    //   }
       
-      customMockData.stats.importantCount = customMockData.brief.length + customMockData.priorityItems.length;
-      customMockData.stats.priorityCount = customMockData.priorityItems.filter((p: any) => p.priority === "High").length;
-      customMockData.stats.followUpCount = customMockData.brief.filter((b: any) => b.action.toLowerCase().includes("check") || b.action.toLowerCase().includes("sync")).length;
-    }
+    //   customMockData.stats.importantCount = customMockData.brief.length + customMockData.priorityItems.length;
+    //   customMockData.stats.priorityCount = customMockData.priorityItems.filter((p: any) => p.priority === "High").length;
+    //   customMockData.stats.followUpCount = customMockData.brief.filter((b: any) => b.action.toLowerCase().includes("check") || b.action.toLowerCase().includes("sync")).length;
+    // }
 
-    const savedBriefData = {
-      ...customMockData,
+    // const savedBriefData = {
+    //   ...customMockData,
+    //   generatedAt: new Date().toISOString(),
+    //   isSimulated: true,
+    //   warn: !hasApiKey ? "GEMINI_API_KEY env var missing. Running in simulated fallback mode." : undefined
+    // };
+
+    // // Save mock configuration/preview to database so we don't query it repeatedly
+    // await insforge.database
+    //   .from("users")
+    //   .update({ dashboard_brief: savedBriefData })
+    //   .eq("id", userId);
+
+    // return NextResponse.json(savedBriefData);
+
+    // 6. No integrations or no live data yet.
+    // Return an empty dashboard instead of mock data.
+
+    const emptyDashboard = {
+      stats: {
+        importantCount: 0,
+        priorityCount: 0,
+        followUpCount: 0,
+      },
+      brief: [],
+      priorityItems: [],
       generatedAt: new Date().toISOString(),
-      isSimulated: true,
-      warn: !hasApiKey ? "GEMINI_API_KEY env var missing. Running in simulated fallback mode." : undefined
+      isSimulated: false,
+      connectedApps: {
+        gmail: isGmailConnected,
+        whatsapp: isWhatsAppConnected,
+      },
     };
 
-    // Save mock configuration/preview to database so we don't query it repeatedly
     await insforge.database
       .from("users")
-      .update({ dashboard_brief: savedBriefData })
+      .update({ dashboard_brief: emptyDashboard })
       .eq("id", userId);
 
-    return NextResponse.json(savedBriefData);
+    return NextResponse.json(emptyDashboard);
 
   } catch (err: any) {
     console.error("Error in dashboard-brief API:", err);
