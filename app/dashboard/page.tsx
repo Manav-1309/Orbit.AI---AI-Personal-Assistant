@@ -149,7 +149,7 @@
     ========================================== */
   function DashboardOverviewPanel({ user }: { user: any }) {
     const router = useRouter();
-    const userName = user?.profile?.name || user?.email?.split("@")?.[0] || "Rahul";
+    const userName = user?.profile?.name || user?.email?.split("@")?.[0] || "Manav";
     const [briefData, setBriefData] = useState<any>(user?.dashboard_brief || null);
     const [loading, setLoading] = useState(!user?.dashboard_brief);
     const [refreshing, setRefreshing] = useState(false);
@@ -546,7 +546,7 @@
                   }
 
                   // Force status as true under simulation state or sync checks to display connection dots
-                  const isAppConnected = app.connected || isSimulated;
+                  const isAppConnected = app.connected || isSimulated ;
 
                   return (
                     <div
@@ -749,7 +749,7 @@
 
     // 1. Expiration & Storage (TTL: 1 Day)
     useEffect(() => {
-      const stored = localStorage.getItem("omnisync_chat_history");
+      const stored = localStorage.getItem("Orbit_chat_history");
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
@@ -757,7 +757,7 @@
           if (Date.now() - parsed.updatedAt < oneDayMs) {
             setMessages(parsed.messages);
           } else {
-            localStorage.removeItem("omnisync_chat_history");
+            localStorage.removeItem("Orbit_chat_history");
           }
         } catch (e) {
           console.error("Failed to restore history", e);
@@ -767,7 +767,7 @@
         setMessages([
           {
             sender: "agent",
-            text: "Hello! I am your OmniSync cognitive personal assistant. I monitor your connected Gmail, WhatsApp, and Telegram in real-time. Ask me to draft email replies, fetch summaries, or list your action items."
+            text: "Hello! I am your Orbit cognitive personal assistant. I monitor your connected Gmail, WhatsApp, and Telegram in real-time. Ask me to draft email replies, fetch summaries, or list your action items."
           }
         ]);
       }
@@ -776,7 +776,7 @@
     useEffect(() => {
       if (messages.length > 0) {
         localStorage.setItem(
-          "omnisync_chat_history",
+          "Orbit_chat_history",
           JSON.stringify({
             updatedAt: Date.now(),
             messages
@@ -896,12 +896,12 @@
         const initial = [
           {
             sender: "agent" as const,
-            text: "Hello! I am your OmniSync cognitive personal assistant. I monitor your connected Gmail, WhatsApp, and Telegram in real-time. Ask me to draft email replies, fetch summaries, or list your action items."
+            text: "Hello! I am your Orbit cognitive personal assistant. I monitor your connected Gmail, WhatsApp, and Telegram in real-time. Ask me to draft email replies, fetch summaries, or list your action items."
           }
         ];
         setMessages(initial);
         localStorage.setItem(
-          "omnisync_chat_history",
+          "Orbit_chat_history",
           JSON.stringify({
             updatedAt: Date.now(),
             messages: initial
@@ -1020,7 +1020,7 @@
                 <Sparkles className="w-4 h-4 text-white fill-white" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-800 dark:text-white leading-tight">OmniSync Intelligent Agent</h3>
+                <h3 className="text-sm font-bold text-slate-800 dark:text-white leading-tight">Orbit Intelligent Agent</h3>
                 <p className="text-[10px] text-emerald-500 font-bold flex items-center mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>
                   Connected to Gmail & WhatsApp
@@ -2488,7 +2488,7 @@
         <div>
           <h2 className="text-xl md:text-2xl font-extrabold text-white light:text-slate-900 tracking-wide">Cognitive Workspace Integrations</h2>
           <p className="text-xs md:text-sm text-slate-400 light:text-slate-600 mt-1">
-            Bridge your communication channels to OmniSync&apos;s background processing model using local and secure MCP configurations.
+            Bridge your communication channels to Orbit&apos;s background processing model using local and secure MCP configurations.
           </p>
         </div>
 
@@ -2622,7 +2622,7 @@
                     <span>Available MCP Tools</span>
                   </h4>
                   <p className="text-[11px] text-slate-500 light:text-slate-600">
-                    The following Model Context Protocol (MCP) tools are exposed by this platform to your OmniSync cognitive personal assistant.
+                    The following Model Context Protocol (MCP) tools are exposed by this platform to your Orbit cognitive personal assistant.
                   </p>
                 </div>
 
@@ -3686,7 +3686,7 @@
     integrations?: Record<string, { connected?: boolean } | null | undefined>;
   };
 
-  const SETTINGS_STORAGE_KEY = "omnisync_assistant_settings";
+  const SETTINGS_STORAGE_KEY = "Orbit_assistant_settings";
 
   function getDefaultAssistantSettings(user?: SettingsUser | null): AssistantSettings {
     const browserTimezone = typeof Intl !== "undefined"
@@ -3874,7 +3874,7 @@
           <div>
             <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Settings</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Tune how OmniSync summarizes, alerts, syncs data, and protects your workspace.
+              Tune how Orbit summarizes, alerts, syncs data, and protects your workspace.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

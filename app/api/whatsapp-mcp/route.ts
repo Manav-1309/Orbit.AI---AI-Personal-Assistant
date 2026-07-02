@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getWhatsAppSession, initWhatsAppConnection } from "@/lib/whatsapp";
 import { insforge } from "@/lib/insforge";
+const DB_LIMIT = 100;
 
 const MOCK_CONTACTS: Record<string, any> = {
   "123456789@s.whatsapp.net": { id: "123456789@s.whatsapp.net", name: "Sarah Jenkins", phone: "+123456789", verifiedName: "Sarah Jenkins" },
@@ -380,21 +381,23 @@ export async function POST(req: NextRequest) {
 
       switch (method) {
         case "whatsapp_get_recent_messages": {
-          const chats = store.chats.slice(0, 20);
-          const messages = chats.map((c: any) => {
-            const chatMsgs = store.messages[c.id] || [];
-            const lastMsg = chatMsgs[chatMsgs.length - 1];
-            return {
-              chatId: c.id,
-              chatName: c.name || c.id,
-              from: lastMsg?.pushName || (lastMsg?.key?.fromMe ? "Me" : "System"),
-              body: lastMsg?.message?.conversation || lastMsg?.message?.extendedTextMessage?.text || "",
-              timestamp: lastMsg?.messageTimestamp ? new Date(lastMsg.messageTimestamp * 1000).toISOString() : new Date().toISOString(),
-              fromMe: !!lastMsg?.key?.fromMe
-            };
-          });
+          const { data: messages } = await insforge.database
+            .from("whatsapp_messages")
+            .select("*")
+            .eq("user_id", userId)
+            .order("timestamp", { ascending: false })
+            .limit(30);
 
-          result = { content: [{ type: "text", text: JSON.stringify({ messages }, null, 2) }] };
+          result = {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify({
+                  messages: messages || []
+                }, null, 2)
+              }
+            ]
+          };
           break;
         }
 
@@ -402,21 +405,24 @@ export async function POST(req: NextRequest) {
           const chatId = params?.chatId;
           const limit = params?.limit || 20;
 
-          if (!chatId) {
-            error = { code: -32602, message: "Argument 'chatId' is required" };
-            break;
-          }
+          const { data: history } = await insforge.database
+            .from("whatsapp_messages")
+            .select("*")
+            .eq("user_id", userId)
+            .eq("chat_id", chatId)
+            .order("timestamp", { ascending: false })
+            .limit(limit);
 
-          const rawMsgs = store.messages[chatId] || [];
-          const history = rawMsgs.slice(-limit).map((m: any) => ({
-            messageId: m.key?.id,
-            from: m.pushName || (m.key?.fromMe ? "Me" : "Unknown"),
-            body: m.message?.conversation || m.message?.extendedTextMessage?.text || "",
-            timestamp: m.messageTimestamp ? new Date(m.messageTimestamp * 1000).toISOString() : new Date().toISOString(),
-            fromMe: !!m.key?.fromMe
-          }));
-
-          result = { content: [{ type: "text", text: JSON.stringify({ messages: history }, null, 2) }] };
+          result = {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify({
+                  messages: history || []
+                }, null, 2)
+              }
+            ]
+          };
           break;
         }
 
@@ -449,44 +455,55 @@ export async function POST(req: NextRequest) {
         }
 
         case "whatsapp_search_chats": {
-          const query = params?.query || "";
-          const lowerQuery = query.toLowerCase();
+          const query = params?.query ?? "";
+          const { data } = await insforge.database
+            .from("whatsapp_messages")
+            .select("*")
+            .eq("user_id", userId);
 
-          const chats = store.chats
-            .filter((c: any) =>
-              (c.name || "").toLowerCase().includes(lowerQuery) ||
-              c.id.toLowerCase().includes(lowerQuery)
-            )
-            .map((c: any) => ({
-              chatId: c.id,
-              name: c.name || c.id,
-              isGroup: c.id.endsWith("@g.us")
-            }));
+          const chats = (data || []).filter(
+            m =>
+              m.sender?.toLowerCase().includes(query.toLowerCase()) ||
+              m.body?.toLowerCase().includes(query.toLowerCase())
+          );
 
-          result = { content: [{ type: "text", text: JSON.stringify({ chats }, null, 2) }] };
+          result = {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify({ chats }, null, 2)
+              }
+            ]
+          };
+
+          break;
           break;
         }
 
         case "whatsapp_summarize_conversations": {
           const chatId = params?.chatId;
-          let msgs: any[] = [];
+
+          let query = insforge.database
+            .from("whatsapp_messages")
+            .select("*")
+            .eq("user_id", userId);
 
           if (chatId) {
-            msgs = store.messages[chatId] || [];
-          } else {
-            // Get last 15 messages from all chats
-            const allChats = store.chats.slice(0, 10);
-            allChats.forEach((c: any) => {
-              const chatMsgs = store.messages[c.id] || [];
-              msgs.push(...chatMsgs.slice(-3));
-            });
+            query = query.eq("chat_id", chatId);
           }
 
+          const { data: msgs, error } = await query
+            .order("timestamp", { ascending: false })
+            .limit(50);
+
+          if (error) {
+            throw new Error(error.message);
+          }
           // Generate simple summaries from text logs
-          const contentSummaries = msgs.map((m: any) => {
-            const sender = m.pushName || (m.key?.fromMe ? "Me" : "Contact");
-            const text = m.message?.conversation || m.message?.extendedTextMessage?.text || "";
-            return `${sender}: "${text}"`;
+          const contentSummaries = (msgs || []).map((m: any) => {
+              const sender = m.sender || "Unknown";
+              const text = m.body || "";
+              return `${sender}: "${text}"`;
           });
 
           const summary = contentSummaries.length > 0

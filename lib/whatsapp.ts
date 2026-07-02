@@ -93,7 +93,7 @@ export class WhatsAppStore {
       }
 
       if (messages) {
-        messages.forEach((msg: any) => {
+        messages.forEach(async (msg: any) => {
           const chatId = msg.key.remoteJid;
           if (chatId) {
             if (!this.messages[chatId]) {
@@ -107,6 +107,25 @@ export class WhatsAppStore {
             }
             if (this.messages[chatId].length > 100) {
               this.messages[chatId] = this.messages[chatId].slice(-100);
+            }
+            try {
+              await insforge.database
+                .from("whatsapp_messages")
+                .upsert({
+                  user_id: this.userId,
+                  chat_id: chatId,
+                  message_id: msg.key.id,
+                  sender: msg.pushName ?? "",
+                  body:
+                    msg.message?.conversation ||
+                    msg.message?.extendedTextMessage?.text ||
+                    "",
+                  from_me: msg.key.fromMe,
+                  timestamp: new Date(Number(msg.messageTimestamp) * 1000),
+                  push_name: msg.pushName ?? ""
+                });
+            } catch (err) {
+              console.error("Failed to save WhatsApp history:", err);
             }
           }
         });
@@ -132,6 +151,9 @@ export class WhatsAppStore {
       this.save();
     });
 
+    
+
+
     ev.on("chats.update", (updates: any[]) => {
       updates.forEach((update: any) => {
         const index = this.chats.findIndex(c => c.id === update.id);
@@ -144,7 +166,7 @@ export class WhatsAppStore {
 
     ev.on("messages.upsert", ({ messages: newMsgs, type }: any) => {
       if (type === "notify" || type === "append") {
-        newMsgs.forEach((msg: any) => {
+        newMsgs.forEach(async (msg: any) => {
           const chatId = msg.key.remoteJid;
           if (chatId) {
             if (!this.messages[chatId]) {
@@ -158,6 +180,26 @@ export class WhatsAppStore {
             }
             if (this.messages[chatId].length > 100) {
               this.messages[chatId] = this.messages[chatId].slice(-100);
+            }
+
+            try {
+              await insforge.database
+                .from("whatsapp_messages")
+                .upsert({
+                  user_id: this.userId,
+                  chat_id: chatId,
+                  message_id: msg.key.id,
+                  sender: msg.pushName ?? "",
+                  body:
+                    msg.message?.conversation ||
+                    msg.message?.extendedTextMessage?.text ||
+                    "",
+                  from_me: msg.key.fromMe,
+                  timestamp: new Date(Number(msg.messageTimestamp) * 1000),
+                  push_name: msg.pushName ?? ""
+                });
+            } catch (err) {
+              console.error("Failed to save WhatsApp message:", err);
             }
 
             const chatIndex = this.chats.findIndex(c => c.id === chatId);
