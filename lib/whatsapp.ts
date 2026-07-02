@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
 import makeWASocket, {
-  useMultiFileAuthState,
   DisconnectReason,
   ConnectionState
 } from "@whiskeysockets/baileys";
+import { useInsForgeAuthState, clearInsForgeAuthState } from "@/lib/useInsForgeAuthState";
 import pino from "pino";
 import path from "path";
 import fs from "fs";
@@ -249,7 +249,9 @@ if (!globalForWhatsApp.whatsappSessions) {
 
 export const whatsappSessions = globalForWhatsApp.whatsappSessions;
 
-const SESSION_DIR_BASE = path.join(process.cwd(), ".whatsapp-sessions");
+const SESSION_DIR_BASE = process.env.WHATSAPP_SESSION_DIR
+  ? path.join(process.env.WHATSAPP_SESSION_DIR)
+  : path.join(process.cwd(), ".whatsapp-sessions");
 
 export function getSessionDir(userId: string) {
   const dir = path.join(SESSION_DIR_BASE, userId);
@@ -314,7 +316,8 @@ export async function initWhatsAppConnection(
   }
 
   const logger = pino({ level: "silent" });
-  const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
+  // Use InsForge DB for credentials — works on ephemeral environments like Render free tier
+  const { state, saveCreds } = await useInsForgeAuthState(userId);
 
   // Setup memory store
   const store = new WhatsAppStore(userId, sessionDir);
@@ -323,6 +326,15 @@ export async function initWhatsAppConnection(
     auth: state,
     logger,
     printQRInTerminal: false,
+    // Keep WebSocket alive on Render/serverless — prevents 30s idle timeout drops
+    keepAliveIntervalMs: 15_000,
+    // Longer timeouts for pairing on slow connections
+    connectTimeoutMs: 60_000,
+    defaultQueryTimeoutMs: 60_000,
+    // Retry failed queries
+    retryRequestDelayMs: 500,
+    // Don't emit own events (reduces noise)
+    emitOwnEvents: false,
   });
 
   store.bind(sock.ev);
@@ -384,11 +396,29 @@ export async function initWhatsAppConnection(
       if (shouldReconnect) {
         session.status = "connecting";
         session.pairingCode = undefined;
-        delete whatsappSessions[userId];
+
+        // 401 = credentials rejected by WhatsApp — clear corrupted creds and stop
+        if (statusCode === 401) {
+          console.warn(`[WA] 401 Unauthorized for user ${userId} — clearing stored credentials`);
+          if (whatsappSessions[userId] === session) {
+            delete whatsappSessions[userId];
+          }
+          clearInsForgeAuthState(userId).catch(console.error);
+          return;
+        }
+
+        // During pairing, keep session reference alive so UI polling still works
+        if (whatsappSessions[userId] === session) {
+          delete whatsappSessions[userId];
+        }
+
+        // Exponential backoff: 2s → 4s → 8s (max) for production stability
+        const delay = Math.min(2000 * Math.pow(2, (session as any)._reconnectAttempts || 0), 8000);
+        (session as any)._reconnectAttempts = ((session as any)._reconnectAttempts || 0) + 1;
 
         setTimeout(() => {
           initWhatsAppConnection(userId, phoneNumber).catch(console.error);
-        }, 3000);
+        }, delay);
       } else {
         session.status = "disconnected";
         delete whatsappSessions[userId];
@@ -432,7 +462,7 @@ export async function initWhatsAppConnection(
       } catch (err) {
         console.error("Failed to generate pairing code:", err);
       }
-    }, 2500);
+    }, 1000);
   }
 
   return session;
@@ -453,6 +483,9 @@ export async function disconnectWhatsApp(userId: string) {
     }
     delete whatsappSessions[userId];
   }
+
+  // Clear credentials from InsForge DB
+  await clearInsForgeAuthState(userId).catch(console.error);
 
   const sessionDir = path.join(SESSION_DIR_BASE, userId);
   if (fs.existsSync(sessionDir)) {
